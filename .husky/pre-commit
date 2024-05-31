@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+if [ -n "$GITHUB_ACTIONS" ]; then
+  echo "Running in GitHub Actions, skipping pre-commit hook"
+  exit 0
+fi
+
+npx @biomejs/biome check --apply src/
