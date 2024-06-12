@@ -14,7 +14,6 @@ const init = async () => {
     server.route(recommendationRoutes);
     server.route(orderRoutes);
     server.route(productRoutes);
-    // Routes Lainnya
 
     await server.start();
     console.log('Server running on %s', server.info.uri);

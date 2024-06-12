@@ -24,9 +24,9 @@ const ProductController = {
 
     deleteProduct: async (request, h) => {
         try {
-            const productID = request.params.productID;
+            const product_id = request.params.product_id;
 
-            const product = await Product.findByPk(productID);
+            const product = await Product.findByPk(product_id);
             if (!product) {
                 return h.response({ message: 'Product not found' }).code(404);
             }
@@ -42,9 +42,9 @@ const ProductController = {
 
     viewProductDetails: async (request, h) => {
         try {
-            const productID = request.params.productID;
+            const product_id = request.params.product_id;
 
-            const product = await Product.findByPk(productID);
+            const product = await Product.findByPk(product_id);
             if (!product) {
                 return h.response({ message: 'Product not found' }).code(404);
             }

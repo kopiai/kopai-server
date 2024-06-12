@@ -12,9 +12,9 @@ const OrderController = {
 
             const createdOrderItems = await Promise.all(orderItems.map(async item => {
                 return await OrderItem.create({
-                    orderID: newOrder.orderID,
-                    productID: item.productID,
-                    blendID: item.blendID,
+                    order_id: newOrder.order_id,
+                    product_id: item.product_id,
+                    blend_id: item.blend_id,
                     quantity: item.quantity,
                     totalPrice: item.totalPrice
                 });
@@ -29,9 +29,9 @@ const OrderController = {
 
     updateOrder: async (request, h) => {
         try {
-            const { orderID, status } = request.payload;
+            const { order_id, status } = request.payload;
 
-            const order = await Order.findByPk(orderID);
+            const order = await Order.findByPk(order_id);
             if (!order) {
                 return h.response({ message: 'Order not found' }).code(404);
             }
@@ -48,9 +48,9 @@ const OrderController = {
 
     cancelOrder: async (request, h) => {
         try {
-            const { orderID } = request.payload;
+            const { order_id } = request.payload;
 
-            const order = await Order.findByPk(orderID);
+            const order = await Order.findByPk(order_id);
             if (!order) {
                 return h.response({ message: 'Order not found' }).code(404);
             }

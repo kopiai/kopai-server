@@ -3,7 +3,7 @@ const sequelize = require('../config/database');
 
 
 const User = sequelize.define('User', {
-    userID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    user_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: DataTypes.STRING,
     gender: DataTypes.BOOLEAN,
     birth: DataTypes.DATE,
@@ -17,49 +17,49 @@ const User = sequelize.define('User', {
 
 
 const RecommendationSystem = sequelize.define('RecommendationSystem', {
-    recommendID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    userID: { type: DataTypes.INTEGER, references: { model: User, key: 'userID' } },
-    blendID: { type: DataTypes.INTEGER },
-    coffeeID: { type: DataTypes.INTEGER }
+    recommend_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    user_id: { type: DataTypes.INTEGER, references: { model: User, key: 'user_id' } },
+    blend_id: { type: DataTypes.INTEGER },
+    coffee_id: { type: DataTypes.INTEGER }
 }, {
     timestamps: false
 });
 
 
 const Order = sequelize.define('Order', {
-    orderID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    order_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     date: DataTypes.DATE,
     status: DataTypes.STRING,
-    userID: { type: DataTypes.INTEGER, references: { model: User, key: 'userID' } }
+    user_id: { type: DataTypes.INTEGER, references: { model: User, key: 'user_id' } }
 }, {
     timestamps: false
 });
 
 
 const OrderItem = sequelize.define('OrderItem', {
-    orderItemID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    orderitem_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     quantity: DataTypes.INTEGER,
     totalPrice: DataTypes.FLOAT,
-    orderID: { type: DataTypes.INTEGER, references: { model: Order, key: 'orderID' } },
-    productID: { type: DataTypes.INTEGER },
-    blendID: { type: DataTypes.INTEGER }
+    order_id: { type: DataTypes.INTEGER, references: { model: Order, key: 'order_id' } },
+    product_id: { type: DataTypes.INTEGER },
+   blend_id: { type: DataTypes.INTEGER }
 }, {
     timestamps: false
 });
 
 
 const Favourites = sequelize.define('Favourites', {
-    favouriteID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    productID: { type: DataTypes.INTEGER },
-    blendID: { type: DataTypes.INTEGER },
-    userID: { type: DataTypes.INTEGER, references: { model: User, key: 'userID' } }
+    favourite_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    product_id: { type: DataTypes.INTEGER },
+   blend_id: { type: DataTypes.INTEGER },
+    user_id: { type: DataTypes.INTEGER, references: { model: User, key: 'user_id' } }
 }, {
     timestamps: false
 });
 
 
 const Product = sequelize.define('Product', {
-    productID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    product_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     product_name: DataTypes.STRING,
     quantity: DataTypes.INTEGER,
     bean: DataTypes.BOOLEAN,
@@ -73,10 +73,10 @@ const Product = sequelize.define('Product', {
 
 
 const Blend = sequelize.define('Blend', {
-    blendID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    coffeeID: { type: DataTypes.INTEGER },
-    productID: { type: DataTypes.INTEGER },
-    userID: { type: DataTypes.INTEGER, references: { model: User, key: 'userID' } },
+    blend_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    coffee_id: { type: DataTypes.INTEGER },
+    product_id: { type: DataTypes.INTEGER },
+    user_id: { type: DataTypes.INTEGER, references: { model: User, key: 'user_id' } },
     blendName: DataTypes.STRING,
     description: DataTypes.STRING
 }, {
@@ -85,7 +85,7 @@ const Blend = sequelize.define('Blend', {
 
 
 const Coffee = sequelize.define('Coffee', {
-    coffeeID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    coffee_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     coffeeName: DataTypes.STRING,
     quantity: DataTypes.INTEGER
 }, {
@@ -106,20 +106,20 @@ const News = sequelize.define('News', {
 });
 
 
-User.hasMany(Order, { foreignKey: 'userID' });
-Order.belongsTo(User, { foreignKey: 'userID' });
+User.hasMany(Order, { foreignKey: 'user_id' });
+Order.belongsTo(User, { foreignKey: 'user_id' });
 
-User.hasMany(RecommendationSystem, { foreignKey: 'userID' });
-RecommendationSystem.belongsTo(User, { foreignKey: 'userID' });
+User.hasMany(RecommendationSystem, { foreignKey: 'user_id' });
+RecommendationSystem.belongsTo(User, { foreignKey: 'user_id' });
 
-User.hasMany(Favourites, { foreignKey: 'userID' });
-Favourites.belongsTo(User, { foreignKey: 'userID' });
+User.hasMany(Favourites, { foreignKey: 'user_id' });
+Favourites.belongsTo(User, { foreignKey: 'user_id' });
 
-User.hasMany(Blend, { foreignKey: 'userID' });
-Blend.belongsTo(User, { foreignKey: 'userID' });
+User.hasMany(Blend, { foreignKey: 'user_id' });
+Blend.belongsTo(User, { foreignKey: 'user_id' });
 
-Order.hasMany(OrderItem, { foreignKey: 'orderID' });
-OrderItem.belongsTo(Order, { foreignKey: 'orderID' });
+Order.hasMany(OrderItem, { foreignKey: 'order_id' });
+OrderItem.belongsTo(Order, { foreignKey: 'order_id' });
 
 
 module.exports = {

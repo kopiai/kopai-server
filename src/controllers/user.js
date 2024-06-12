@@ -53,9 +53,9 @@ const UserController = {
 
     update: async (request, h) => {
         try {
-            const { userID, name, gender, birth, email, phone, address } = request.payload;
+            const { user_id, name, gender, birth, email, phone, address } = request.payload;
 
-            const user = await User.findByPk(userID);
+            const user = await User.findByPk(user_id);
             if (!user) {
                 return h.response({ message: 'User not found' }).code(404);
             }
