@@ -1,16 +1,59 @@
+const { Product } = require('../models');
+
 const ProductController = {
     addProduct: async (request, h) => {
-        
-        return h.response({ message: 'Product added successfully' }).code(201);
+        try {
+            const { product_name, quantity, bean, size, price, deskripsi, photo } = request.payload;
+
+            const newProduct = await Product.create({
+                product_name,
+                quantity,
+                bean,
+                size,
+                price,
+                deskripsi,
+                photo
+            });
+
+            return h.response({ message: 'Product added successfully', product: newProduct }).code(201);
+        } catch (err) {
+            console.error(err);
+            return h.response({ message: 'Error adding product' }).code(500);
+        }
     },
+
     deleteProduct: async (request, h) => {
-       
-        return h.response({ message: 'Product deleted successfully' }).code(200);
+        try {
+            const productID = request.params.productID;
+
+            const product = await Product.findByPk(productID);
+            if (!product) {
+                return h.response({ message: 'Product not found' }).code(404);
+            }
+
+            await product.destroy();
+
+            return h.response({ message: 'Product deleted successfully' }).code(200);
+        } catch (err) {
+            console.error(err);
+            return h.response({ message: 'Error deleting product' }).code(500);
+        }
     },
+
     viewProductDetails: async (request, h) => {
-        const productID = request.params.productID;
-        
-        return h.response({ productDetails: {} }).code(200);
+        try {
+            const productID = request.params.productID;
+
+            const product = await Product.findByPk(productID);
+            if (!product) {
+                return h.response({ message: 'Product not found' }).code(404);
+            }
+
+            return h.response({ productDetails: product }).code(200);
+        } catch (err) {
+            console.error(err);
+            return h.response({ message: 'Error retrieving product details' }).code(500);
+        }
     }
 };
 
