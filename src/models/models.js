@@ -1,5 +1,13 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const { Sequelize, DataTypes } = require('sequelize');
+const databaseConfig = require('../config/database'); // Correct path to database.js
+
+const sequelize = new Sequelize(databaseConfig.database, databaseConfig.username, databaseConfig.password, {
+  host: databaseConfig.host,
+  dialect: databaseConfig.dialect
+});
+
+
+module.exports = { sequelize };
 
 
 const User = sequelize.define('User', {

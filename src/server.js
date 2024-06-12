@@ -1,16 +1,22 @@
 require('dotenv').config();
 const Hapi = require('@hapi/hapi');
-const sequelize = require('./config/database');
-const UserController = require('./controllers/UserController');
-const ProductController = require('./controllers/ProductController');
-const OrderController = require('./controllers/OrderController');
+const { Sequelize } = require('sequelize'); // Assuming you're using Sequelize for the database
+const databaseConfig = require('./config/database'); // Relative path to the config file
+const UserController = require('./controllers/user'); // Assuming the controller is in a controllers directory
+const ProductController = require('./controllers/product'); // Same as above
+const OrderController = require('./controllers/order'); // Same as above
 
+// Initialize Sequelize with your database configuration
+const sequelize = new Sequelize(databaseConfig);
+
+// Function to initialize the server
 const init = async () => {
     const server = Hapi.server({
         port: 3000,
         host: 'localhost'
     });
 
+    // Try to authenticate with the database
     try {
         await sequelize.authenticate();
         console.log('Database connected successfully.');
@@ -18,15 +24,16 @@ const init = async () => {
         console.error('Unable to connect to the database:', error);
     }
 
+    // Define server routes
     server.route([
         {
             method: 'POST',
-            path: '/register',
+            path: '/users/register',
             handler: UserController.register
         },
         {
             method: 'POST',
-            path: '/login',
+            path: '/users/login',
             handler: UserController.login
         },
         {
@@ -66,13 +73,16 @@ const init = async () => {
         }
     ]);
 
+    // Start the server
     await server.start();
     console.log('Server running on %s', server.info.uri);
 };
 
+// Handle unhandled rejections
 process.on('unhandledRejection', (err) => {
     console.log(err);
     process.exit(1);
 });
 
+// Initialize the server
 init();
