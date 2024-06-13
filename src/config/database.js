@@ -1,6 +1,6 @@
 module.exports = {
-    username: 'kopai_admin',
-    password: 'admin1234',
+    username: 'root',
+    password: '',
     database: 'kopai_database',
     host: 'localhost',
     dialect: 'mysql' 

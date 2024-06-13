@@ -10,7 +10,7 @@ const sequelize = new Sequelize(databaseConfig.database, databaseConfig.username
 module.exports = { sequelize };
 
 
-const User = sequelize.define('User', {
+const User = sequelize.define('users', {
     user_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: DataTypes.STRING,
     gender: DataTypes.BOOLEAN,
@@ -66,7 +66,7 @@ const Favourites = sequelize.define('Favourites', {
 });
 
 
-const Product = sequelize.define('Product', {
+const Product = sequelize.define('products', {
     product_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     product_name: DataTypes.STRING,
     quantity: DataTypes.INTEGER,
