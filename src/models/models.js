@@ -84,12 +84,13 @@ const Blend = sequelize.define('Blend', {
     blend_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     coffee_id: { type: DataTypes.INTEGER },
     product_id: { type: DataTypes.INTEGER },
-    user_id: { type: DataTypes.INTEGER, references: { model: User, key: 'user_id' } },
+    user_id: { type: DataTypes.INTEGER, references: { model: 'User', key: 'user_id' } },
     blendName: DataTypes.STRING,
     description: DataTypes.STRING
-}, {
+  }, {
     timestamps: false
-});
+  });
+  
 
 
 const Coffee = sequelize.define('Coffee', {
@@ -113,8 +114,21 @@ const News = sequelize.define('News', {
     timestamps: false
 });
 
+const Preference = sequelize.define('Preference', {
+    preference_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    user_id: { type: DataTypes.INTEGER, references: { model: 'users', key: 'user_id' } },
+    effect: { type: DataTypes.STRING, allowNull: false },
+    healthIssue: { type: DataTypes.STRING, allowNull: false },
+    preferredAroma: { type: DataTypes.STRING, allowNull: false },
+    preferredTaste: { type: DataTypes.STRING, allowNull: false }
+}, {
+    timestamps: false
+});
 
+User.hasOne(Preference, { foreignKey: 'user_id' });
+Preference.belongsTo(User, { foreignKey: 'user_id' });
 User.hasMany(Order, { foreignKey: 'user_id' });
+
 Order.belongsTo(User, { foreignKey: 'user_id' });
 
 User.hasMany(RecommendationSystem, { foreignKey: 'user_id' });
@@ -140,5 +154,6 @@ module.exports = {
     Product,
     Blend,
     Coffee,
-    News
+    News,
+    Preference
 };

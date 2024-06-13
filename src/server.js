@@ -6,6 +6,8 @@ const UserController = require('./controllers/user');
 const ProductController = require('./controllers/product'); 
 const OrderController = require('./controllers/order');
 const OrderItemController = require('./controllers/orderItem'); 
+const BlendController = require('./controllers/blend');
+const CoffeeController = require('./controllers/coffee');
 
 const sequelize = new Sequelize(databaseConfig);
 
@@ -77,6 +79,51 @@ const init = async () => {
             method: 'DELETE',
             path: '/orders/{order_id}/items/{orderItem_id}',
             handler: OrderItemController.deleteOrderItem
+        },
+        {
+            method: 'GET',
+            path: '/blends/{blend_id}',
+            handler: BlendController.getBlendById
+        },
+        {
+            method: 'POST',
+            path: '/blends/add',
+            handler: BlendController.createBlend
+        },
+        {
+            method: 'PUT',
+            path: '/blends/{blend_id}',
+            handler: BlendController.updateBlend
+        },
+        {
+            method: 'DELETE',
+            path: '/blends/{blend_id}',
+            handler: BlendController.deleteBlend
+        },
+        {
+            method: 'GET',
+            path: '/coffees',
+            handler: CoffeeController.getAllCoffees
+        },
+        {
+            method: 'GET',
+            path: '/blends/{blend_id}/coffee',
+            handler: CoffeeController.getCoffeeById
+        },
+        {
+            method: 'POST',
+            path: '/coffee/add',
+            handler: CoffeeController.addCoffee
+        },
+        {
+            method: 'PUT',
+            path: '/coffees/{id}',
+            handler: CoffeeController.updateCoffee
+        },
+        {
+            method: 'DELETE',
+            path: '/coffee/delete/{coffee_id}',
+            handler: CoffeeController.deleteCoffee
         }
     ]);
 
