@@ -8,6 +8,8 @@ const OrderController = require('./controllers/order');
 const OrderItemController = require('./controllers/orderItem'); 
 const BlendController = require('./controllers/blend');
 const CoffeeController = require('./controllers/coffee');
+const NewsController = require('./controllers/news');
+const PreferenceController = require('./controllers/preference');
 
 const sequelize = new Sequelize(databaseConfig);
 
@@ -124,6 +126,56 @@ const init = async () => {
             method: 'DELETE',
             path: '/coffee/delete/{coffee_id}',
             handler: CoffeeController.deleteCoffee
+        },
+        {
+            method: 'GET',
+            path: '/news',
+            handler: NewsController.getAllNews
+        },
+        {
+            method: 'GET',
+            path: '/news/{news_id}',
+            handler: NewsController.getNewsById
+        },
+        {
+            method: 'POST',
+            path: '/news',
+            handler: NewsController.addNews
+        },
+        {
+            method: 'PUT',
+            path: '/news/{news_id}',
+            handler: NewsController.updateNews
+        },
+        {
+            method: 'DELETE',
+            path: '/news/{news_id}',
+            handler: NewsController.deleteNews
+        },
+        {
+            method: 'GET',
+            path: '/preferences',
+            handler: PreferenceController.getAllPreferences
+        },
+        {
+            method: 'GET',
+            path: '/preferences/{preference_id}',
+            handler: PreferenceController.getPreferenceById
+        },
+        {
+            method: 'POST',
+            path: '/preferences',
+            handler: PreferenceController.addPreference
+        },
+        {
+            method: 'PUT',
+            path: '/preferences/{preference_id}',
+            handler: PreferenceController.updatePreference
+        },
+        {
+            method: 'DELETE',
+            path: '/preferences/{preference_id}',
+            handler: PreferenceController.deletePreference
         }
     ]);
 
