@@ -1,4 +1,4 @@
-const PreferenceController = require('../controllers/preference');
+const PreferenceController = require('../controllers/preferenceController');
 
 const routes = [
     {
@@ -8,7 +8,7 @@ const routes = [
     },
     {
         method: 'GET',
-        path: '/preferences/{id}',
+        path: '/preferences/{preference_id}',
         handler: PreferenceController.getPreferenceById
     },
     {
@@ -18,12 +18,12 @@ const routes = [
     },
     {
         method: 'PUT',
-        path: '/preferences/{id}',
+        path: '/preferences/{preference_id}',
         handler: PreferenceController.updatePreference
     },
     {
         method: 'DELETE',
-        path: '/preferences/{id}',
+        path: '/preferences/{preference_id}',
         handler: PreferenceController.deletePreference
     }
 ];

@@ -1,15 +1,16 @@
-require('dotenv').config();
 const Hapi = require('@hapi/hapi');
-const { Sequelize } = require('sequelize'); 
-const databaseConfig = require('./config/database'); 
-const UserController = require('./controllers/user'); 
-const ProductController = require('./controllers/product'); 
-const OrderController = require('./controllers/order');
-const OrderItemController = require('./controllers/orderItem'); 
-const BlendController = require('./controllers/blend');
-const CoffeeController = require('./controllers/coffee');
-const NewsController = require('./controllers/news');
-const PreferenceController = require('./controllers/preference');
+const { Sequelize } = require('sequelize');
+const databaseConfig = require('./config/database');
+const UserController = require('./controllers/userController');
+const ProductController = require('./controllers/productController');
+const OrderController = require('./controllers/orderController');
+const OrderItemController = require('./controllers/orderItemController');
+const BlendController = require('./controllers/blendController');
+const CoffeeController = require('./controllers/coffeeController');
+const NewsController = require('./controllers/newsController');
+const PreferenceController = require('./controllers/preferenceController');
+const RoastingController = require('./controllers/roastingController');
+const GrindingController = require('./controllers/grindingController');
 
 const sequelize = new Sequelize(databaseConfig);
 
@@ -54,7 +55,7 @@ const init = async () => {
         },
         {
             method: 'GET',
-            path: '/products/',
+            path: '/products',
             handler: ProductController.viewProductDetails
         },
         {
@@ -64,27 +65,27 @@ const init = async () => {
         },
         {
             method: 'PUT',
-            path: '/orders/',
+            path: '/orders/{orderId}',
             handler: OrderController.updateOrder
         },
         {
             method: 'DELETE',
-            path: '/orders/',
+            path: '/orders/{orderId}',
             handler: OrderController.cancelOrder
         },
         {
             method: 'POST',
-            path: '/orders/{order_id}/items',
+            path: '/orders/{orderId}/items',
             handler: OrderItemController.createOrderItem
         },
         {
             method: 'DELETE',
-            path: '/orders/{order_id}/items/{orderItem_id}',
+            path: '/orders/{orderId}/items/{orderItemId}',
             handler: OrderItemController.deleteOrderItem
         },
         {
             method: 'GET',
-            path: '/blends/{blend_id}',
+            path: '/blends/{blendId}',
             handler: BlendController.getBlendById
         },
         {
@@ -94,12 +95,12 @@ const init = async () => {
         },
         {
             method: 'PUT',
-            path: '/blends/{blend_id}',
+            path: '/blends/{blendId}',
             handler: BlendController.updateBlend
         },
         {
             method: 'DELETE',
-            path: '/blends/{blend_id}',
+            path: '/blends/{blendId}',
             handler: BlendController.deleteBlend
         },
         {
@@ -109,7 +110,7 @@ const init = async () => {
         },
         {
             method: 'GET',
-            path: '/blends/{blend_id}/coffee',
+            path: '/blends/{blendId}/coffee',
             handler: CoffeeController.getCoffeeById
         },
         {
@@ -124,7 +125,7 @@ const init = async () => {
         },
         {
             method: 'DELETE',
-            path: '/coffee/delete/{coffee_id}',
+            path: '/coffee/delete/{coffeeId}',
             handler: CoffeeController.deleteCoffee
         },
         {
@@ -134,7 +135,7 @@ const init = async () => {
         },
         {
             method: 'GET',
-            path: '/news/{news_id}',
+            path: '/news/{newsId}',
             handler: NewsController.getNewsById
         },
         {
@@ -144,12 +145,12 @@ const init = async () => {
         },
         {
             method: 'PUT',
-            path: '/news/{news_id}',
+            path: '/news/{newsId}',
             handler: NewsController.updateNews
         },
         {
             method: 'DELETE',
-            path: '/news/{news_id}',
+            path: '/news/{newsId}',
             handler: NewsController.deleteNews
         },
         {
@@ -159,7 +160,7 @@ const init = async () => {
         },
         {
             method: 'GET',
-            path: '/preferences/{preference_id}',
+            path: '/preferences/{preferenceId}',
             handler: PreferenceController.getPreferenceById
         },
         {
@@ -169,18 +170,72 @@ const init = async () => {
         },
         {
             method: 'PUT',
-            path: '/preferences/{preference_id}',
+            path: '/preferences/{preferenceId}',
             handler: PreferenceController.updatePreference
         },
         {
             method: 'DELETE',
-            path: '/preferences/{preference_id}',
+            path: '/preferences/{preferenceId}',
             handler: PreferenceController.deletePreference
+        },
+        {
+            method: 'POST',
+            path: '/roastings',
+            handler: RoastingController.createRoasting
+        },
+        {
+            method: 'GET',
+            path: '/roastings',
+            handler: RoastingController.getAllRoastings
+        },
+        {
+            method: 'GET',
+            path: '/roastings/{id}',
+            handler: RoastingController.getRoastingById
+        },
+        {
+            method: 'PUT',
+            path: '/roastings/{id}',
+            handler: RoastingController.updateRoasting
+        },
+        {
+            method: 'DELETE',
+            path: '/roastings/{id}',
+            handler: RoastingController.deleteRoasting
+        },
+        {
+            method: 'POST',
+            path: '/grindings',
+            handler: GrindingController.createGrinding
+        },
+        {
+            method: 'GET',
+            path: '/grindings',
+            handler: GrindingController.getAllGrindings
+        },
+        {
+            method: 'GET',
+            path: '/grindings/{id}',
+            handler: GrindingController.getGrindingById
+        },
+        {
+            method: 'PUT',
+            path: '/grindings/{id}',
+            handler: GrindingController.updateGrinding
+        },
+        {
+            method: 'DELETE',
+            path: '/grindings/{id}',
+            handler: GrindingController.deleteGrinding
         }
     ]);
 
-    await server.start();
-    console.log('Server running on %s', server.info.uri);
+    try {
+        await server.start();
+        console.log('Server running on %s', server.info.uri);
+    } catch (error) {
+        console.error('Error starting server:', error);
+    }
 };
 
 process.on('unhandledRejection', (err) => {

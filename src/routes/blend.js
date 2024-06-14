@@ -1,6 +1,4 @@
-// routes/blend.js
-
-const BlendController = require('../controllers/blend');
+const BlendController = require('../controllers/blendController');
 
 module.exports = [
     {

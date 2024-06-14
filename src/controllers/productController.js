@@ -36,6 +36,21 @@ const ProductController = {
     }
   },
 
+  getProductsByStatus: async (req, res) => {
+    const { status } = req.params;
+
+    try {
+      const products = await Product.findAll({
+        where: { status }
+      });
+
+      return res.status(200).json(products);
+    } catch (err) {
+      console.error('Error fetching products by status:', err);
+      return res.status(500).json({ message: 'Error fetching products by status' });
+    }
+  },
+
 
   getProductById: async (req, res) => {
     const productId = req.params.id;

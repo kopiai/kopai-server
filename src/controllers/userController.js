@@ -1,5 +1,5 @@
-const bcrypt = require('bcrypt'); // Ensure bcrypt is installed
-const { User } = require('../models/models'); // Corrected import path
+const bcrypt = require('bcrypt'); 
+const { User } = require('../models/models'); 
 
 const UserController = {
     register: async (request, h) => {
