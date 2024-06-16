@@ -2,12 +2,12 @@
   "name": "kopai-server",
   "version": "1.0.0",
   "description": "KopAI Server",
-  "main": "main.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node src/main.js",
-    "dev": "nodemon src/main.js",
-    "format": "npx @biomejs/biome format --write ./src",
-    "lint": "npx @biomejs/biome lint --apply ./src",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "check": "biome check ./src",
+    "check:fix": "biome check --apply ./src",
     "prepare": "husky",
     "commitlint": "commitlint --edit"
   },

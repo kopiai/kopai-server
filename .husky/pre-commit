@@ -6,4 +6,7 @@ if [ -n "$GITHUB_ACTIONS" ]; then
   exit 0
 fi
 
-npx @biomejs/biome check --apply src/
+npm run check || {
+  echo "Please fix by running 'npm run check:fix' and commit again."
+  exit 1
+}
