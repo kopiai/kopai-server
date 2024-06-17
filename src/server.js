@@ -47,7 +47,7 @@ const init = async () => {
 		{
 			method: "POST",
 			path: "/products/add",
-			handler: ProductController.addProduct,
+			handler: ProductController.createProduct,
 		},
 		{
 			method: "DELETE",
@@ -57,7 +57,7 @@ const init = async () => {
 		{
 			method: "GET",
 			path: "/products",
-			handler: ProductController.viewProductDetails,
+			handler: ProductController.getAllProducts,
 		},
 		{
 			method: "POST",
@@ -85,24 +85,9 @@ const init = async () => {
 			handler: OrderItemController.deleteOrderItem,
 		},
 		{
-			method: "GET",
-			path: "/blends/{blendId}",
-			handler: BlendController.getBlendById,
-		},
-		{
 			method: "POST",
 			path: "/blends/add",
 			handler: BlendController.createBlend,
-		},
-		{
-			method: "PUT",
-			path: "/blends/{blendId}",
-			handler: BlendController.updateBlend,
-		},
-		{
-			method: "DELETE",
-			path: "/blends/{blendId}",
-			handler: BlendController.deleteBlend,
 		},
 		{
 			method: "GET",

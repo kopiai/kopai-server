@@ -1,15 +1,47 @@
-const express = require("express");
-const router = express.Router();
-const GrindingController = require("../controllers/grindingController");
+const Hapi = require('@hapi/hapi');
+const GrindingController = require('../controllers/grindingController');
 
-router.post("/grindings", GrindingController.createGrinding);
+const init = async () => {
+    const server = Hapi.server({
+        port: 3000,
+        host: 'localhost'
+    });
 
-router.get("/grindings", GrindingController.getAllGrindings);
+    server.route([
+        {
+            method: 'POST',
+            path: '/grindings',
+            handler: GrindingController.createGrinding
+        },
+        {
+            method: 'GET',
+            path: '/grindings',
+            handler: GrindingController.getAllGrindings
+        },
+        {
+            method: 'GET',
+            path: '/grindings/{id}',
+            handler: GrindingController.getGrindingById
+        },
+        {
+            method: 'PUT',
+            path: '/grindings/{id}',
+            handler: GrindingController.updateGrinding
+        },
+        {
+            method: 'DELETE',
+            path: '/grindings/{id}',
+            handler: GrindingController.deleteGrinding
+        }
+    ]);
 
-router.get("/grindings/:id", GrindingController.getGrindingById);
+    await server.start();
+    console.log('Server running on %s', server.info.uri);
+};
 
-router.put("/grindings/:id", GrindingController.updateGrinding);
+process.on('unhandledRejection', (err) => {
+    console.log(err);
+    process.exit(1);
+});
 
-router.delete("/grindings/:id", GrindingController.deleteGrinding);
-
-module.exports = router;
+init();
