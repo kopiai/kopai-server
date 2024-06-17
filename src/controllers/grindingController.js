@@ -1,7 +1,7 @@
 const { Grinding } = require("../models/models");
 
 const GrindingController = {
-	createGrinding: async (req, res) => {
+	createGrinding: async (request, h) => {
 		try {
 			const { grinding_name, saranpenyajian } = req.body;
 
@@ -10,45 +10,49 @@ const GrindingController = {
 				saranpenyajian,
 			});
 
-			return res.status(201).json({
-				message: "Grinding created successfully",
-				grinding: newGrinding,
-			});
+			return h
+				.response({
+					message: "Grinding created successfully",
+					grinding: newGrinding,
+				})
+				.status(201);
 		} catch (err) {
 			console.error("Error creating grinding:", err);
-			return res.status(500).json({ message: "Error creating grinding" });
+			return h.response({ message: "Error creating grinding" }).status(500);
 		}
 	},
 
-	getAllGrindings: async (req, res) => {
+	getAllGrindings: async (request, h) => {
 		try {
 			const grindings = await Grinding.findAll();
 
-			return res.status(200).json(grindings);
+			return h.response(grindings).status(200);
 		} catch (err) {
 			console.error("Error fetching grindings:", err);
-			return res.status(500).json({ message: "Error fetching grindings" });
+			return h.response({ message: "Error fetching grindings" }).status(500);
 		}
 	},
 
-	getGrindingById: async (req, res) => {
+	getGrindingById: async (request, h) => {
 		const { id } = req.params;
 
 		try {
 			const grinding = await Grinding.findByPk(id);
 
 			if (!grinding) {
-				return res.status(404).json({ message: "Grinding not found" });
+				return h.response({ message: "Grinding not found" }).status(404);
 			}
 
-			return res.status(200).json(grinding);
+			return h.response(grinding).status(200);
 		} catch (err) {
 			console.error("Error fetching grinding by ID:", err);
-			return res.status(500).json({ message: "Error fetching grinding by ID" });
+			return h
+				.response({ message: "Error fetching grinding by ID" })
+				.status(500);
 		}
 	},
 
-	updateGrinding: async (req, res) => {
+	updateGrinding: async (request, h) => {
 		const { id } = req.params;
 		const { grinding_name, saranpenyajian } = req.body;
 
@@ -56,7 +60,7 @@ const GrindingController = {
 			let grinding = await Grinding.findByPk(id);
 
 			if (!grinding) {
-				return res.status(404).json({ message: "Grinding not found" });
+				return h.response({ message: "Grinding not found" }).status(404);
 			}
 
 			grinding = await grinding.update({
@@ -64,31 +68,31 @@ const GrindingController = {
 				saranpenyajian,
 			});
 
-			return res
-				.status(200)
-				.json({ message: "Grinding updated successfully", grinding });
+			return res.response().code(200);
 		} catch (err) {
 			console.error("Error updating grinding:", err);
-			return res.status(500).json({ message: "Error updating grinding" });
+			return h.response({ message: "Error updating grinding" }).status(500);
 		}
 	},
 
-	deleteGrinding: async (req, res) => {
+	deleteGrinding: async (request, h) => {
 		const { id } = req.params;
 
 		try {
 			const grinding = await Grinding.findByPk(id);
 
 			if (!grinding) {
-				return res.status(404).json({ message: "Grinding not found" });
+				return h.response({ message: "Grinding not found" }).status(404);
 			}
 
 			await grinding.destroy();
 
-			return res.status(200).json({ message: "Grinding deleted successfully" });
+			return h
+				.response({ message: "Grinding deleted successfully" })
+				.status(200);
 		} catch (err) {
 			console.error("Error deleting grinding:", err);
-			return res.status(500).json({ message: "Error deleting grinding" });
+			return h.response({ message: "Error deleting grinding" }).status(500);
 		}
 	},
 };

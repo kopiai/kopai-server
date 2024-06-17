@@ -1,6 +1,6 @@
-const CoffeeController = require("../controllers/coffee");
+const CoffeeController = require("../controllers/coffeeController");
 
-const routes = [
+module.exports = [
 	{
 		method: "GET",
 		path: "/coffees",
@@ -27,5 +27,3 @@ const routes = [
 		handler: CoffeeController.deleteCoffee,
 	},
 ];
-
-module.exports = routes;

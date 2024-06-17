@@ -1,7 +1,7 @@
 const { Product } = require("../models/models");
 
 const ProductController = {
-	createProduct: async (req, res) => {
+	createProduct: async (request, h) => {
 		try {
 			const {
 				blend_id,
@@ -30,26 +30,29 @@ const ProductController = {
 			});
 
 			return res
-				.status(201)
-				.json({ message: "Product created successfully", product: newProduct });
+				.response({
+					message: "Product created successfully",
+					product: newProduct,
+				})
+				.code(201);
 		} catch (err) {
 			console.error("Error creating product:", err);
-			return res.status(500).json({ message: "Error creating product" });
+			return h.response({ message: "Error creating product" }).code(500);
 		}
 	},
 
-	getAllProducts: async (req, res) => {
+	getAllProducts: async (request, h) => {
 		try {
 			const products = await Product.findAll();
 
-			return res.status(200).json(products);
+			return h.response(products).code(200);
 		} catch (err) {
 			console.error("Error fetching products:", err);
-			return res.status(500).json({ message: "Error fetching products" });
+			return h.response({ message: "Error fetching products" }).code(500);
 		}
 	},
 
-	getProductsByStatus: async (req, res) => {
+	getProductsByStatus: async (request, h) => {
 		const { status } = req.params;
 
 		try {
@@ -57,33 +60,33 @@ const ProductController = {
 				where: { status },
 			});
 
-			return res.status(200).json(products);
+			return h.response(products).code(200);
 		} catch (err) {
 			console.error("Error fetching products by status:", err);
 			return res
-				.status(500)
-				.json({ message: "Error fetching products by status" });
+				.code(500)
+				.response({ message: "Error fetching products by status" });
 		}
 	},
 
-	getProductById: async (req, res) => {
+	getProductById: async (request, h) => {
 		const productId = req.params.id;
 
 		try {
 			const product = await Product.findByPk(productId);
 
 			if (!product) {
-				return res.status(404).json({ message: "Product not found" });
+				return h.response({ message: "Product not found" }).code(404);
 			}
 
-			return res.status(200).json(product);
+			return h.response(product).code(200);
 		} catch (err) {
 			console.error("Error fetching product:", err);
-			return res.status(500).json({ message: "Error fetching product" });
+			return h.response({ message: "Error fetching product" }).code(500);
 		}
 	},
 
-	updateProduct: async (req, res) => {
+	updateProduct: async (request, h) => {
 		const productId = req.params.id;
 		const {
 			blend_id,
@@ -102,7 +105,7 @@ const ProductController = {
 			const product = await Product.findByPk(productId);
 
 			if (!product) {
-				return res.status(404).json({ message: "Product not found" });
+				return h.response({ message: "Product not found" }).code(404);
 			}
 
 			product.blend_id = blend_id;
@@ -119,30 +122,30 @@ const ProductController = {
 			await product.save();
 
 			return res
-				.status(200)
-				.json({ message: "Product updated successfully", product });
+				.response({ message: "Product updated successfully", product })
+				.code(200);
 		} catch (err) {
 			console.error("Error updating product:", err);
-			return res.status(500).json({ message: "Error updating product" });
+			return h.response({ message: "Error updating product" }).code(500);
 		}
 	},
 
-	deleteProduct: async (req, res) => {
+	deleteProduct: async (request, h) => {
 		const productId = req.params.id;
 
 		try {
 			const product = await Product.findByPk(productId);
 
 			if (!product) {
-				return res.status(404).json({ message: "Product not found" });
+				return h.response({ message: "Product not found" }).code(404);
 			}
 
 			await product.destroy();
 
-			return res.status(200).json({ message: "Product deleted successfully" });
+			return h.response({ message: "Product deleted successfully" }).code(200);
 		} catch (err) {
 			console.error("Error deleting product:", err);
-			return res.status(500).json({ message: "Error deleting product" });
+			return h.response({ message: "Error deleting product" }).code(500);
 		}
 	},
 };

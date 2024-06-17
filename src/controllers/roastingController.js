@@ -1,7 +1,7 @@
 const { Roasting } = require("../models/models");
 
 const RoastingController = {
-	createRoasting: async (req, res) => {
+	createRoasting: async (request, h) => {
 		try {
 			const { roasting_type, celcius, color, flavor, output } = req.body;
 
@@ -13,45 +13,49 @@ const RoastingController = {
 				output,
 			});
 
-			return res.status(201).json({
-				message: "Roasting created successfully",
-				roasting: newRoasting,
-			});
+			return h
+				.response({
+					message: "Roasting created successfully",
+					roasting: newRoasting,
+				})
+				.status(201);
 		} catch (err) {
 			console.error("Error creating roasting:", err);
-			return res.status(500).json({ message: "Error creating roasting" });
+			return h.response({ message: "Error creating roasting" }).status(500);
 		}
 	},
 
-	getAllRoastings: async (req, res) => {
+	getAllRoastings: async (request, h) => {
 		try {
 			const roastings = await Roasting.findAll();
 
-			return res.status(200).json(roastings);
+			return h.response(roastings).status(200);
 		} catch (err) {
 			console.error("Error fetching roastings:", err);
-			return res.status(500).json({ message: "Error fetching roastings" });
+			return h.response({ message: "Error fetching roastings" }).status(500);
 		}
 	},
 
-	getRoastingById: async (req, res) => {
+	getRoastingById: async (request, h) => {
 		const { id } = req.params;
 
 		try {
 			const roasting = await Roasting.findByPk(id);
 
 			if (!roasting) {
-				return res.status(404).json({ message: "Roasting not found" });
+				return h.response({ message: "Roasting not found" }).status(404);
 			}
 
-			return res.status(200).json(roasting);
+			return h.response(roasting).status(200);
 		} catch (err) {
 			console.error("Error fetching roasting by ID:", err);
-			return res.status(500).json({ message: "Error fetching roasting by ID" });
+			return h
+				.response({ message: "Error fetching roasting by ID" })
+				.status(500);
 		}
 	},
 
-	updateRoasting: async (req, res) => {
+	updateRoasting: async (request, h) => {
 		const { id } = req.params;
 		const { roasting_type, celcius, color, flavor, output } = req.body;
 
@@ -59,7 +63,7 @@ const RoastingController = {
 			let roasting = await Roasting.findByPk(id);
 
 			if (!roasting) {
-				return res.status(404).json({ message: "Roasting not found" });
+				return h.response({ message: "Roasting not found" }).status(404);
 			}
 
 			roasting = await roasting.update({
@@ -72,29 +76,31 @@ const RoastingController = {
 
 			return res
 				.status(200)
-				.json({ message: "Roasting updated successfully", roasting });
+				.response({ message: "Roasting updated successfully", roasting });
 		} catch (err) {
 			console.error("Error updating roasting:", err);
-			return res.status(500).json({ message: "Error updating roasting" });
+			return h.response({ message: "Error updating roasting" }).status(500);
 		}
 	},
 
-	deleteRoasting: async (req, res) => {
+	deleteRoasting: async (request, h) => {
 		const { id } = req.params;
 
 		try {
 			const roasting = await Roasting.findByPk(id);
 
 			if (!roasting) {
-				return res.status(404).json({ message: "Roasting not found" });
+				return h.response({ message: "Roasting not found" }).status(404);
 			}
 
 			await roasting.destroy();
 
-			return res.status(200).json({ message: "Roasting deleted successfully" });
+			return h
+				.response({ message: "Roasting deleted successfully" })
+				.status(200);
 		} catch (err) {
 			console.error("Error deleting roasting:", err);
-			return res.status(500).json({ message: "Error deleting roasting" });
+			return h.response({ message: "Error deleting roasting" }).status(500);
 		}
 	},
 };
