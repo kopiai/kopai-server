@@ -1,15 +1,47 @@
-const express = require("express");
-const router = express.Router();
-const RoastingController = require("../controllers/roastingController");
+const Hapi = require('@hapi/hapi');
+const RoastingController = require('../controllers/roastingController');
 
-router.post("/roastings", RoastingController.createRoasting);
+const init = async () => {
+    const server = Hapi.server({
+        port: 3000,
+        host: 'localhost'
+    });
 
-router.get("/roastings", RoastingController.getAllRoastings);
+    server.route([
+        {
+            method: 'POST',
+            path: '/roastings',
+            handler: RoastingController.createRoasting
+        },
+        {
+            method: 'GET',
+            path: '/roastings',
+            handler: RoastingController.getAllRoastings
+        },
+        {
+            method: 'GET',
+            path: '/roastings/{id}',
+            handler: RoastingController.getRoastingById
+        },
+        {
+            method: 'PUT',
+            path: '/roastings/{id}',
+            handler: RoastingController.updateRoasting
+        },
+        {
+            method: 'DELETE',
+            path: '/roastings/{id}',
+            handler: RoastingController.deleteRoasting
+        }
+    ]);
 
-router.get("/roastings/:id", RoastingController.getRoastingById);
+    await server.start();
+    console.log('Server running on %s', server.info.uri);
+};
 
-router.put("/roastings/:id", RoastingController.updateRoasting);
+process.on('unhandledRejection', (err) => {
+    console.log(err);
+    process.exit(1);
+});
 
-router.delete("/roastings/:id", RoastingController.deleteRoasting);
-
-module.exports = router;
+init();
