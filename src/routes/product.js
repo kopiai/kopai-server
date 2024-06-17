@@ -1,19 +1,29 @@
-const ProductController = require("../controllers/product");
+const ProductController = require("../controllers/productController");
 
 module.exports = [
 	{
 		method: "POST",
-		path: "/products/add",
-		handler: ProductController.addProduct,
+		path: "/products",
+		handler: ProductController.createProduct,
 	},
 	{
-		method: "DELETE",
-		path: "/products/delete",
-		handler: ProductController.deleteProduct,
+		method: "GET",
+		path: "/products",
+		handler: ProductController.getAllProducts,
 	},
 	{
 		method: "GET",
 		path: "/products/{productID}",
-		handler: ProductController.viewProductDetails,
+		handler: ProductController.getProductById,
+	},
+	{
+		method: "PUT",
+		path: "/products/{productID}",
+		handler: ProductController.updateProduct,
+	},
+	{
+		method: "DELETE",
+		path: "/products",
+		handler: ProductController.deleteProduct,
 	},
 ];

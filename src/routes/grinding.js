@@ -1,15 +1,31 @@
-const express = require("express");
-const router = express.Router();
 const GrindingController = require("../controllers/grindingController");
 
-router.post("/grindings", GrindingController.createGrinding);
-
-router.get("/grindings", GrindingController.getAllGrindings);
-
-router.get("/grindings/:id", GrindingController.getGrindingById);
-
-router.put("/grindings/:id", GrindingController.updateGrinding);
-
-router.delete("/grindings/:id", GrindingController.deleteGrinding);
+const router = [
+	{
+		method: "POST",
+		path: "/grindings",
+		handler: GrindingController.createGrinding,
+	},
+	{
+		method: "GET",
+		path: "/grindings",
+		handler: GrindingController.getAllGrindings,
+	},
+	{
+		method: "GET",
+		path: "/grindings/{id}",
+		handler: GrindingController.getGrindingById,
+	},
+	{
+		method: "PUT",
+		path: "/grindings/{id}",
+		handler: GrindingController.updateGrinding,
+	},
+	{
+		method: "DELETE",
+		path: "/grindings/{id}",
+		handler: GrindingController.deleteGrinding,
+	},
+];
 
 module.exports = router;

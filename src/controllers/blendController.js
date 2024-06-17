@@ -76,6 +76,77 @@ const createBlend = async (req, res) => {
 	}
 };
 
+const getBlendById = async (req, res) => {
+	const { blend_id } = req.params;
+
+	const blend = await Blend.findByPk(blend_id);
+
+	if (!blend) {
+		return res.status(404).json({ error: "Blend not found" });
+	}
+
+	return res.json(blend);
+};
+
+const getAllBlends = async (req, res) => {
+	const blends = await Blend.findAll();
+
+	return res.json(blends);
+};
+
+const updateBlend = async (req, res) => {
+	const { blend_id } = req.params;
+	const {
+		coffee_id1,
+		coffee_id2,
+		percentage,
+		ukuran_gram,
+		roast_id,
+		grind_id,
+		user_id,
+		blend_name,
+		description,
+	} = req.body;
+
+	const blend = await Blend.findByPk(blend_id);
+
+	if (!blend) {
+		return res.status(404).json({ error: "Blend not found" });
+	}
+
+	blend.coffee_id1 = coffee_id1;
+	blend.coffee_id2 = coffee_id2;
+	blend.percentage = percentage;
+	blend.ukuran_gram = ukuran_gram;
+	blend.roast_id = roast_id;
+	blend.grind_id = grind_id;
+	blend.user_id = user_id;
+	blend.blend_name = blend_name;
+	blend.description = description;
+
+	await blend.save();
+
+	return res.json(blend);
+};
+
+const deleteBlend = async (req, res) => {
+	const { blend_id } = req.params;
+
+	const blend = await Blend.findByPk(blend_id);
+
+	if (!blend) {
+		return res.status(404).json({ error: "Blend not found" });
+	}
+
+	await blend.destroy();
+
+	return res.status(204).send();
+};
+
 module.exports = {
 	createBlend,
+	getBlendById,
+	getAllBlends,
+	updateBlend,
+	deleteBlend,
 };

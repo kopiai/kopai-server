@@ -1,14 +1,14 @@
-const OrderItemController = require("../controllers/orderItem");
+const OrderItemController = require("../controllers/orderItemController");
 
 const orderItemRoutes = [
 	{
 		method: "POST",
-		path: "/orders/{{order_id}}/items",
+		path: "/orders/{order_id}/items",
 		handler: OrderItemController.createOrderItem,
 	},
 	{
 		method: "DELETE",
-		path: "/orders/{{order_id}}/items/{{orderItem_id}}",
+		path: "/orders/{order_id}/items/{orderItem_id}",
 		handler: OrderItemController.deleteOrderItem,
 	},
 ];

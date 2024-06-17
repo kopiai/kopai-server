@@ -1,15 +1,31 @@
-const express = require("express");
-const router = express.Router();
 const RoastingController = require("../controllers/roastingController");
 
-router.post("/roastings", RoastingController.createRoasting);
-
-router.get("/roastings", RoastingController.getAllRoastings);
-
-router.get("/roastings/:id", RoastingController.getRoastingById);
-
-router.put("/roastings/:id", RoastingController.updateRoasting);
-
-router.delete("/roastings/:id", RoastingController.deleteRoasting);
+const router = [
+	{
+		method: "POST",
+		path: "/roastings",
+		handler: RoastingController.createRoasting,
+	},
+	{
+		method: "GET",
+		path: "/roastings",
+		handler: RoastingController.getAllRoastings,
+	},
+	{
+		method: "GET",
+		path: "/roastings/{id}",
+		handler: RoastingController.getRoastingById,
+	},
+	{
+		method: "PUT",
+		path: "/roastings/{id}",
+		handler: RoastingController.updateRoasting,
+	},
+	{
+		method: "DELETE",
+		path: "/roastings/{id}",
+		handler: RoastingController.deleteRoasting,
+	},
+];
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const CoffeeController = require("../controllers/coffee");
+const CoffeeController = require("../controllers/coffeeController");
 
 const routes = [
 	{
