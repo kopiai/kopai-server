@@ -22,6 +22,7 @@ const User = sequelize.define(
 		phone: DataTypes.BIGINT,
 		password: DataTypes.STRING,
 		address: DataTypes.STRING,
+		photo: DataTypes.STRING
 	},
 	{
 		timestamps: false,
