@@ -43,6 +43,13 @@ const ProductController = {
 
 	getAllProducts: async (request, h) => {
 		try {
+			const { bean } = request.query;
+			if (bean) {
+				const products = await Product.findAll({
+					where: { bean: bean === "true" },
+				});
+				return h.response(products).code(200);
+			}
 			const products = await Product.findAll();
 
 			return h.response(products).code(200);
