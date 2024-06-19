@@ -1,6 +1,7 @@
 require("dotenv").config();
 const Hapi = require("@hapi/hapi");
 const { Sequelize } = require("sequelize");
+const axios = require("axios");
 const databaseConfig = require("./config/database");
 const routes = require("./routes");
 const sequelize = new Sequelize(databaseConfig);
@@ -20,18 +21,45 @@ const init = async () => {
         console.error("Unable to connect to the database:", error);
     }
 
-    // Register hapi-auth-jwt2 plugin
     await server.register(require("hapi-auth-jwt2"));
 
-    // Define the JWT strategy
     server.auth.strategy("jwt", "jwt", {
         key: process.env.JWT_SECRET,
         validate: validateToken,
         verifyOptions: { algorithms: ["HS256"] },
     });
 
-    // Set the default authentication strategy
-    server.auth.default("jwt");
+    server.route({
+        method: 'GET',
+        path: '/fun-fact',
+        handler: async (request, h) => {
+            const coffeeName = request.query.name;
+            if (!coffeeName) {
+                return h.response({ error: 'Nama kopi tidak diberikan.' }).code(400);
+            }
+
+            try {
+                const question = `Buat Fun Fact mengenai kopi ${coffeeName}`;
+                const response = await axios.post(
+                    'https://api.google.com/generativeai/v1/generateContent', 
+                    {
+                        input: `Bertindaklah sebagai barista di sebuah kedai kopi yang nyaman. Jawab tanpa menambahkan pertanyaan baru. Jawab pertanyaan berikut: ${question}`
+                    },
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${process.env.GEMINI_API_KEY}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+
+                return { funFact: response.data.result };
+            } catch (error) {
+                console.error(error);
+                return h.response({ error: 'Terjadi kesalahan saat mengambil fun fact.' }).code(500);
+            }
+        }
+    });
 
     server.route(routes);
 
