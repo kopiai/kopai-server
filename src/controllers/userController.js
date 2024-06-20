@@ -24,11 +24,11 @@ const UserController = {
 				phone,
 				password: hashedPassword,
 				address,
-				photo
+				photo,
 			});
 
 			const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
-				expiresIn: '1h',
+				expiresIn: "1h",
 			});
 
 			return h
@@ -59,7 +59,7 @@ const UserController = {
 			}
 
 			const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-				expiresIn: '1h',
+				expiresIn: "1h",
 			});
 
 			return h
