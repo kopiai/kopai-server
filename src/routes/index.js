@@ -10,4 +10,5 @@ module.exports = [
 	require("./recommendationSystem"),
 	require("./roasting"),
 	require("./user"),
+	require("./coffeeLlm"),
 ].flat();
