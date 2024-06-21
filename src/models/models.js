@@ -78,7 +78,6 @@ const OrderItem = sequelize.define(
 			autoIncrement: true,
 		},
 		quantity: DataTypes.INTEGER,
-		totalPrice: DataTypes.FLOAT,
 		order_id: {
 			type: DataTypes.INTEGER,
 			references: { model: "Order", key: "order_id" },
@@ -288,11 +287,11 @@ Favourites.belongsTo(User, { foreignKey: "user_id" });
 User.hasMany(Blend, { foreignKey: "user_id" });
 Blend.belongsTo(User, { foreignKey: "user_id" });
 
-Order.hasMany(OrderItem, { foreignKey: "order_id" });
+Order.hasMany(OrderItem, { foreignKey: "order_id", as: "orderItems" });
 OrderItem.belongsTo(Order, { foreignKey: "order_id" });
 
 Product.hasMany(OrderItem, { foreignKey: "product_id" });
-OrderItem.belongsTo(Product, { foreignKey: "product_id" });
+OrderItem.belongsTo(Product, { foreignKey: "product_id", as: "product" });
 
 Blend.hasMany(OrderItem, { foreignKey: "blend_id" });
 OrderItem.belongsTo(Blend, { foreignKey: "blend_id" });

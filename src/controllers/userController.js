@@ -75,24 +75,26 @@ const UserController = {
 		}
 	},
 
+	getUserById: async (request, h) => {
+		try {
+			const { user_id } = request.params;
+			const user = await User.findByPk(user_id);
+			if (!user) {
+				return h.response({ message: "User not found" }).code(404);
+			}
+			return h.response(user).code(200);
+		} catch (err) {
+			console.error(err);
+			return h.response({ message: "Error fetching user" }).code(500);
+		}
+	},
+
 	update: async (request, h) => {
 		try {
-			const { authorization } = request.headers;
-			if (!authorization) {
-				return h.response({ message: "No token provided" }).code(401);
-			}
-
-			const token = authorization.split(" ")[1];
-			let decoded;
-			try {
-				decoded = jwt.verify(token, process.env.JWT_SECRET);
-			} catch (err) {
-				return h.response({ message: "Invalid token" }).code(401);
-			}
-
+			const { user_id } = request.params;
 			const { name, gender, birth, email, phone, address } = request.payload;
 
-			const user = await User.findByPk(decoded.id);
+			const user = await User.findByPk(user_id);
 			if (!user) {
 				return h.response({ message: "User not found" }).code(404);
 			}

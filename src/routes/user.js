@@ -12,8 +12,13 @@ module.exports = [
 		handler: UserController.login,
 	},
 	{
+		method: "GET",
+		path: "/users/profile/{user_id}",
+		handler: UserController.getUserById,
+	},
+	{
 		method: "PUT",
-		path: "/users/update",
+		path: "/users/update/{user_id}",
 		handler: UserController.update,
 	},
 ];
