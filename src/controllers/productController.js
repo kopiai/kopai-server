@@ -41,23 +41,53 @@ const ProductController = {
 		}
 	},
 
-	getAllProducts: async (request, h) => {
+	getAllProducts: async (req, h) => {
 		try {
-			const { bean } = request.query;
-			if (bean) {
-				const products = await Product.findAll({
-					where: { bean: bean === "true" },
-				});
-				return h.response(products).code(200);
+			const { bean, page = 1, pageSize = 5 } = req.query;
+	
+		   
+			const pageNum = parseInt(page, 10);
+			const size = parseInt(pageSize, 10);
+	
+		   
+			const offset = (pageNum - 1) * size;
+	
+		  
+			let options = {
+				offset: offset,
+				limit: size,
+			};
+	
+		   
+			if (bean && bean === "true") {
+				options.where = { bean: true };
 			}
-			const products = await Product.findAll();
-
-			return h.response(products).code(200);
+	
+		   
+			const totalProducts = await Product.count(options.where ? { where: options.where } : {});
+	
+		   
+			const products = await Product.findAll(options);
+	
+		   
+			const totalPages = Math.ceil(totalProducts / size);
+	
+		   
+			return h.response({
+				data: products,
+				meta: {
+					totalProducts,
+					totalPages,
+					currentPage: pageNum,
+					pageSize: size,
+				},
+			}).code(200);
 		} catch (err) {
 			console.error("Error fetching products:", err);
 			return h.response({ message: "Error fetching products" }).code(500);
 		}
 	},
+	
 
 	getProductsByStatus: async (request, h) => {
 		const { status } = req.params;
