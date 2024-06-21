@@ -7,6 +7,16 @@ module.exports = [
 		handler: OrderController.createOrder,
 	},
 	{
+		method: "GET",
+		path: "/orders",
+		handler: OrderController.getAllOrders,
+	},
+	{
+		method: "GET",
+		path: "/orders/{order_id}",
+		handler: OrderController.getOrderById,
+	},
+	{
 		method: "PUT",
 		path: "/orders/update",
 		handler: OrderController.updateOrder,

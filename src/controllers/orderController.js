@@ -1,4 +1,4 @@
-const { Order, OrderItem } = require("../models/models");
+const { Order, OrderItem, Product } = require("../models/models");
 const OrderController = {
 	createOrder: async (request, h) => {
 		try {
@@ -16,7 +16,6 @@ const OrderController = {
 						product_id: item.product_id,
 						blend_id: item.blend_id,
 						quantity: item.quantity,
-						totalPrice: item.totalPrice,
 					});
 				}),
 			);
@@ -32,6 +31,50 @@ const OrderController = {
 			console.error(err);
 			return h.response({ message: "Error creating order" }).code(500);
 		}
+	},
+
+	getAllOrders: async (request, h) => {
+		const orders = await Order.findAll({
+			include: [
+				{
+					model: OrderItem,
+					as: "orderItems",
+					include: [
+						{
+							model: Product,
+							as: "product",
+						},
+					],
+				},
+			],
+		});
+
+		return h.response(orders).code(200);
+	},
+
+	getOrderById: async (request, h) => {
+		const { order_id } = request.params;
+
+		const order = await Order.findByPk(order_id, {
+			include: [
+				{
+					model: OrderItem,
+					as: "orderItems",
+					include: [
+						{
+							model: Product,
+							as: "product",
+						},
+					],
+				},
+			],
+		});
+
+		if (!order) {
+			return h.response({ message: "Order not found" }).code(404);
+		}
+
+		return h.response(order).code(200);
 	},
 
 	updateOrder: async (request, h) => {
